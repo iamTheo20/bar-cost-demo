@@ -1,0 +1,11 @@
+SUPPLIER: Nordic Beverage AB
+INVOICE: NB-48211
+DATE: 2026-11-03
+
+ITEM | UNIT | QTY | UNIT PRICE | TOTAL
+Herno Gin 70cl | bottle | 6 | 349.00 | 2094.00
+Fever-Tree Tonic 20cl | bottle | 48 | 12.90 | 619.20
+Lime | kg | 5 | 42.00 | 210.00
+Pilsner keg 30L | keg | 2 | 1450.00 | 2900.00
+
+SUBTOTAL: 5823.20

@@ -1,0 +1,11 @@
+SUPPLIER: Stockholm Fresh AB
+INVOICE: SF-1093
+DATE: 2026-11-04
+
+ITEM | UNIT | QTY | UNIT PRICE | TOTAL
+Beef mince | kg | 10 | 132.00 | 1320.00
+Burger bun | each | 60 | 6.20 | 372.00
+Avocado | kg | 4 | 79.00 | 316.00
+Cheddar | kg | 2 | 145.00 | 300.00
+
+SUBTOTAL: 2308.00
