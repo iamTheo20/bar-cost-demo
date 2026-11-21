@@ -13,6 +13,7 @@ class Settings:
 
     log_level: str = "WARNING"
     data_dir: Path = field(default_factory=lambda: Path("data"))
+    claude_model: str = ""
 
 
 def load() -> Settings:
@@ -23,4 +24,5 @@ def load() -> Settings:
         allowed = ", ".join(LEVELS)
         raise ValueError(f"{name} must be one of {allowed}, not {level!r}")
     data_dir = Path(os.environ.get("BAR_COST_DEMO_DATA_DIR", "data"))
-    return Settings(log_level=level, data_dir=data_dir)
+    claude_model = os.environ.get("BAR_COST_DEMO_CLAUDE_MODEL", "")
+    return Settings(log_level=level, data_dir=data_dir, claude_model=claude_model)

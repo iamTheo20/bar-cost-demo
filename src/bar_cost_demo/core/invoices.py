@@ -38,9 +38,9 @@ class Invoice:
 
 
 class Extractor(Protocol):
-    """Turns invoice text into an Invoice, or raises ValueError saying why it cannot."""
+    """Turns an invoice file into an Invoice, or raises ValueError saying why it cannot."""
 
-    def extract(self, text: str) -> Invoice: ...
+    def extract(self, path: Path) -> Invoice: ...
 
 
 def _amount(raw: str, what: str) -> Decimal:
@@ -81,7 +81,11 @@ def _rows(lines: list[str]) -> tuple[LineItem, ...]:
 class RuleBasedExtractor:
     """Reads the demo's plain-text layout: headers, a pipe table, a subtotal."""
 
-    def extract(self, text: str) -> Invoice:
+    def extract(self, path: Path) -> Invoice:
+        """Read and parse one plain-text invoice file."""
+        return self.parse(path.read_text(encoding="utf-8"))
+
+    def parse(self, text: str) -> Invoice:
         """Parse one invoice, refusing anything with a header or the table missing."""
         lines = [line for line in text.splitlines() if line.strip()]
         head = _headers(lines)
@@ -102,7 +106,7 @@ class RuleBasedExtractor:
 
 def load_invoice(path: Path, extractor: Extractor | None = None) -> Invoice:
     """The invoice at `path`, read by `extractor` (the rule-based one by default)."""
-    return (extractor or RuleBasedExtractor()).extract(path.read_text(encoding="utf-8"))
+    return (extractor or RuleBasedExtractor()).extract(path)
 
 
 def arithmetic_issues(invoice: Invoice) -> list[str]:

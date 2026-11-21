@@ -1,7 +1,10 @@
-"""Read a supplier invoice and check its arithmetic: `bar-cost-demo invoice <file> [--summary]`."""
+"""Read a supplier invoice and check its arithmetic.
+
+    bar-cost-demo invoice <file> [--summary] [--llm]
+"""
 
 from bar_cost_demo.core.cli import invoice_args
-from bar_cost_demo.core.invoices import arithmetic_issues, load_invoice
+from bar_cost_demo.core.invoices import arithmetic_issues
 
 NAME = "invoice"
 
@@ -9,7 +12,7 @@ NAME = "invoice"
 def run(args: list[str]) -> str:
     """The invoice's lines, every arithmetic issue, and a one-line summary last."""
     parsed = invoice_args(args)
-    invoice = load_invoice(parsed.invoice)
+    invoice = parsed.load()
     issues = arithmetic_issues(invoice)
     summary = (
         f"invoice {invoice.number}: {len(invoice.lines)} lines, {invoice.subtotal} SEK,"

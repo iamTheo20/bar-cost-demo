@@ -1,0 +1,49 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1348 >>
+stream
+BT
+/F1 18 Tf 1 0 0 1 72 760 Tm (Bryggeriet Soder AB) Tj
+/F1 10 Tf 1 0 0 1 72 742 Tm (Hornsgatan 88, 118 21 Stockholm  -  Org.nr 556712-4410) Tj
+/F1 14 Tf 1 0 0 1 400 760 Tm (FAKTURA / INVOICE) Tj
+/F1 10 Tf 1 0 0 1 400 742 Tm (Fakturanr: BS-2207) Tj
+/F1 10 Tf 1 0 0 1 400 728 Tm (Fakturadatum: 17 nov 2026) Tj
+/F1 10 Tf 1 0 0 1 400 714 Tm (Kund: Bar Demo AB) Tj
+/F1 10 Tf 1 0 0 1 72 670 Tm (Artikel                      Enhet     Antal     A-pris \(SEK\)     Belopp \(SEK\)) Tj
+/F1 10 Tf 1 0 0 1 72 660 Tm (------------------------------------------------------------------------------) Tj
+/F1 10 Tf 1 0 0 1 72 645 Tm (Pilsner keg 30L              keg           2        1 520,00         3 040,00) Tj
+/F1 10 Tf 1 0 0 1 72 630 Tm (Lime                         kg            3           46,00           140,00) Tj
+/F1 10 Tf 1 0 0 1 72 615 Tm (Herno Gin 70cl               bottle        4          372,00         1 488,00) Tj
+/F1 10 Tf 1 0 0 1 72 595 Tm (------------------------------------------------------------------------------) Tj
+/F1 10 Tf 1 0 0 1 330 580 Tm (Summa exkl. moms:                 4 668,00) Tj
+/F1 10 Tf 1 0 0 1 330 566 Tm (Moms 25%:                         1 167,00) Tj
+/F1 11 Tf 1 0 0 1 330 552 Tm (Att betala:                       5 835,00) Tj
+/F1 9 Tf 1 0 0 1 72 500 Tm (Betalningsvillkor 30 dagar. Bankgiro 5512-0871.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001640 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1708
+%%EOF

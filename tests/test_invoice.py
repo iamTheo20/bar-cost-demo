@@ -31,13 +31,13 @@ def test_a_correct_invoice_has_no_issues() -> None:
 def test_an_invoice_without_headers_is_refused() -> None:
     text = "ITEM | UNIT | QTY | UNIT PRICE | TOTAL\nLime | kg | 1 | 2 | 2\n"
     with pytest.raises(ValueError, match="missing SUPPLIER"):
-        RuleBasedExtractor().extract(text)
+        RuleBasedExtractor().parse(text)
 
 
 def test_a_non_number_is_refused_with_its_product() -> None:
     text = "SUPPLIER: A\nINVOICE: 1\nDATE: 2026-11-01\nLime | kg | two | 2.00 | 4.00\nSUBTOTAL: 4\n"
     with pytest.raises(ValueError, match="Lime qty"):
-        RuleBasedExtractor().extract(text)
+        RuleBasedExtractor().parse(text)
 
 
 def test_the_summary_counts_lines_total_and_issues() -> None:

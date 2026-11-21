@@ -1,10 +1,9 @@
-"""Flag price moves against the last purchase: `bar-cost-demo prices <file> [--summary]`."""
+"""Flag price moves against the last purchase: `bar-cost-demo prices <file> [--summary] [--llm]`."""
 
 from decimal import Decimal
 
 from bar_cost_demo.core.catalog import last_price_before, price_history
 from bar_cost_demo.core.cli import invoice_args
-from bar_cost_demo.core.invoices import load_invoice
 
 NAME = "prices"
 THRESHOLD = Decimal("0.05")
@@ -13,7 +12,7 @@ THRESHOLD = Decimal("0.05")
 def run(args: list[str]) -> str:
     """Each line's change since the last purchase, flagged at 5% or more, and a summary last."""
     parsed = invoice_args(args)
-    invoice = load_invoice(parsed.invoice)
+    invoice = parsed.load()
     history = price_history(parsed.data_dir / "price_history.csv")
     report = [f"Price changes on {invoice.number} vs the last purchase:"]
     moved: list[tuple[str, Decimal]] = []

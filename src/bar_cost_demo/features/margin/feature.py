@@ -1,10 +1,12 @@
-"""Show what an invoice's prices do to menu margins: `bar-cost-demo margin <file> [--summary]`."""
+"""Show what an invoice's prices do to menu margins.
+
+    bar-cost-demo margin <file> [--summary] [--llm]
+"""
 
 from decimal import Decimal
 
 from bar_cost_demo.core.catalog import current_prices, menu, price_history, serving_cost
 from bar_cost_demo.core.cli import invoice_args
-from bar_cost_demo.core.invoices import load_invoice
 
 NAME = "margin"
 
@@ -12,7 +14,7 @@ NAME = "margin"
 def run(args: list[str]) -> str:
     """Margin before and after for every menu item the invoice touches, and a summary last."""
     parsed = invoice_args(args)
-    invoice = load_invoice(parsed.invoice)
+    invoice = parsed.load()
     history = price_history(parsed.data_dir / "price_history.csv")
     items = menu(parsed.data_dir / "menu.csv", parsed.data_dir / "recipes.csv")
     bought = {item.product for item in invoice.lines}
