@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(.harness/**)",
+      "Edit(.claude/**)",
+      "Edit(pyproject.toml)",
+      "Edit(ruff.toml)",
+      "Edit(Makefile)",
+      "Edit(uv.lock)",
+      "Edit(tests/conftest.py)",
+      "Edit(.github/**)"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Config ratchet, judged by the base branch's guard
+        if: github.event_name == 'pull_request'
+        run: |
+          git show "origin/$GITHUB_BASE_REF:.harness/config_guard.py" > "$RUNNER_TEMP/config_guard.py"
+          python3 -I "$RUNNER_TEMP/config_guard.py" --root . --base "origin/$GITHUB_BASE_REF"
+
+      - name: Use the base branch's check config, not the PR's
+        if: github.event_name == 'pull_request'
+        run: |
+          git checkout "origin/$GITHUB_BASE_REF" -- ruff.toml Makefile .harness/rules.py .harness/rules.toml .harness/baseline.json
+
+      - run: uv sync --frozen
+
+      - run: make check verify
