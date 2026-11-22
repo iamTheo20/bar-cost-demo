@@ -1,0 +1,9 @@
+#!/bin/sh
+# A stand-in for the `claude` CLI: replays a recorded reply so golden runs are
+# free, offline and deterministic. BARCOST_FAKE_CLAUDE_REPLY names the reply;
+# BARCOST_FAKE_CLAUDE_ARGS, if set, receives the arguments one per line (NUL-free).
+if [ -n "$BARCOST_FAKE_CLAUDE_ARGS" ]; then
+  for a in "$@"; do printf '%s\n' "$a"; done > "$BARCOST_FAKE_CLAUDE_ARGS"
+  ls -A > "$BARCOST_FAKE_CLAUDE_ARGS.cwd"
+fi
+cat "$BARCOST_FAKE_CLAUDE_REPLY"

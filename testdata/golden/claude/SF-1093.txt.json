@@ -1,0 +1,45 @@
+{
+  "type": "result",
+  "subtype": "success",
+  "is_error": false,
+  "result": "{\"supplier\":\"Stockholm Fresh AB\",\"number\":\"SF-1093\",\"date\":\"2026-11-04\",\"lines\":[{\"product\":\"Beef mince\",\"unit\":\"kg\",\"qty\":\"10\",\"unit_price\":\"132.00\",\"total\":\"1320.00\"},{\"product\":\"Burger bun\",\"unit\":\"each\",\"qty\":\"60\",\"unit_price\":\"6.20\",\"total\":\"372.00\"},{\"product\":\"Avocado\",\"unit\":\"kg\",\"qty\":\"4\",\"unit_price\":\"79.00\",\"total\":\"316.00\"},{\"product\":\"Cheddar\",\"unit\":\"kg\",\"qty\":\"2\",\"unit_price\":\"145.00\",\"total\":\"300.00\"}],\"subtotal\":\"2308.00\"}",
+  "structured_output": {
+    "supplier": "Stockholm Fresh AB",
+    "number": "SF-1093",
+    "date": "2026-11-04",
+    "lines": [
+      {
+        "product": "Beef mince",
+        "unit": "kg",
+        "qty": "10",
+        "unit_price": "132.00",
+        "total": "1320.00"
+      },
+      {
+        "product": "Burger bun",
+        "unit": "each",
+        "qty": "60",
+        "unit_price": "6.20",
+        "total": "372.00"
+      },
+      {
+        "product": "Avocado",
+        "unit": "kg",
+        "qty": "4",
+        "unit_price": "79.00",
+        "total": "316.00"
+      },
+      {
+        "product": "Cheddar",
+        "unit": "kg",
+        "qty": "2",
+        "unit_price": "145.00",
+        "total": "300.00"
+      }
+    ],
+    "subtotal": "2308.00"
+  },
+  "num_turns": 3,
+  "duration_ms": 6865,
+  "total_cost_usd": 0.0201366
+}

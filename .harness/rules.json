@@ -1,0 +1,50 @@
+{
+  "max_file_lines": 400,
+  "max_function_lines": 60,
+  "allow": [],
+  "forbidden": [
+    {
+      "source": "internal/core",
+      "target": "internal/features",
+      "fix": "core is shared by every feature and may not depend on one; move the code into core or pass it in",
+      "see": "internal/core/config/config.go"
+    }
+  ],
+  "banned": [
+    {
+      "call": "os.Getenv",
+      "fix": "settings, err := config.Load() from internal/core/config",
+      "why": "settings are read and validated in one place",
+      "see": "internal/core/config/config.go",
+      "exempt": ["internal/core/config/*.go", "cmd/barcost/*_test.go"]
+    },
+    {
+      "call": "os.LookupEnv",
+      "fix": "settings, err := config.Load() from internal/core/config",
+      "why": "settings are read and validated in one place",
+      "see": "internal/core/config/config.go",
+      "exempt": ["internal/core/config/*.go"]
+    },
+    {
+      "call": "os.Environ",
+      "fix": "settings, err := config.Load() from internal/core/config",
+      "why": "settings are read and validated in one place",
+      "see": "internal/core/config/config.go",
+      "exempt": ["internal/core/config/*.go", "cmd/barcost/*_test.go"]
+    },
+    {
+      "call": "log/slog.New",
+      "fix": "logger := log.Get(name) from internal/core/log",
+      "why": "logging is configured once, in core/log",
+      "see": "internal/core/log/log.go",
+      "exempt": ["internal/core/log/*.go"]
+    },
+    {
+      "call": "log/slog.SetDefault",
+      "fix": "logger := log.Get(name) from internal/core/log",
+      "why": "logging is configured once, in core/log",
+      "see": "internal/core/log/log.go",
+      "exempt": ["internal/core/log/*.go"]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 # The one gate. Hooks, CI and agents all run `make check` and `make verify`.
-UV ?= uv
+GO ?= go
 
 .DEFAULT_GOAL := help
 .PHONY: help check lint types imports rules test verify new-feature
@@ -9,23 +9,25 @@ help: ## list targets
 
 check: lint types imports rules test ## everything that must be green before "done"
 
-lint: ## ruff
-	$(UV) run --frozen ruff check .
+lint: ## gofmt (no unformatted file) and go vet
+	@unformatted="$$(gofmt -l .)"; if [ -n "$$unformatted" ]; then echo "gofmt -w needed:"; echo "$$unformatted"; exit 1; fi
+	$(GO) vet ./...
 
-types: ## pyright --strict
-	$(UV) run --frozen pyright
+types: ## compile every package and every test binary (Go's type check)
+	$(GO) build ./...
+	$(GO) test -count=1 -run '^$$' ./... > /dev/null
 
-imports: ## import-linter layer and independence contracts
-	$(UV) run --frozen lint-imports
+imports: ## architecture tests: layers, feature independence, one paved road
+	$(GO) test -count=1 ./internal
 
-rules: ## .harness/rules.py: the project's FIX/WHY/SEE rules, with baseline
-	$(UV) run --frozen python .harness/rules.py
+rules: ## .harness/rules.go: the project's FIX/WHY/SEE rules, with baseline
+	$(GO) run .harness/rules.go
 
-test: ## pytest
-	$(UV) run --frozen pytest
+test: ## go test, with the race detector
+	$(GO) test -count=1 -race ./...
 
 verify: ## run every feature in FEATURES.md and compare its output
-	$(UV) run --frozen python scripts/verify.py
+	$(GO) test -count=1 ./cmd/barcost -run '^TestFeaturesMD$$'
 
-new-feature: ## scaffold src/bar_cost_demo/features/$(NAME) with a passing test
-	$(UV) run --frozen python scripts/new_feature.py $(NAME)
+new-feature: ## scaffold internal/features/$(NAME) with a passing test
+	$(GO) run ./tools/newfeature $(NAME)

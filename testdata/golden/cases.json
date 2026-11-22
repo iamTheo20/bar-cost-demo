@@ -1,0 +1,292 @@
+[
+  {
+    "name": "usage-no-args",
+    "args": [],
+    "exit": 2,
+    "stderr_last_line": "usage: bar-cost-demo <hello|invoice|margin|prices> [args...]"
+  },
+  {
+    "name": "usage-unknown-feature",
+    "args": [
+      "nope"
+    ],
+    "exit": 2,
+    "stderr_last_line": "usage: bar-cost-demo <hello|invoice|margin|prices> [args...]"
+  },
+  {
+    "name": "hello-default",
+    "args": [
+      "hello"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "hello-world",
+    "args": [
+      "hello",
+      "World"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "hello-ada",
+    "args": [
+      "hello",
+      "Ada"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-missing-file",
+    "args": [
+      "invoice"
+    ],
+    "exit": 1,
+    "stderr_last_line": "ValueError: usage: <feature> <invoice file> [--summary] [--llm]"
+  },
+  {
+    "name": "invoice-two-files",
+    "args": [
+      "invoice",
+      "a.txt",
+      "b.txt"
+    ],
+    "exit": 1,
+    "stderr_last_line": "ValueError: usage: <feature> <invoice file> [--summary] [--llm]"
+  },
+  {
+    "name": "invoice-unsupported-suffix",
+    "args": [
+      "invoice",
+      "data/menu.csv"
+    ],
+    "exit": 1,
+    "stderr_last_line": "ValueError: cannot read .csv invoices; use one of .pdf, .png, .jpg, .jpeg, .webp, .txt"
+  },
+  {
+    "name": "invoice-NB-48211",
+    "args": [
+      "invoice",
+      "data/invoices/NB-48211.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-NB-48211-summary",
+    "args": [
+      "invoice",
+      "data/invoices/NB-48211.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-SF-1093",
+    "args": [
+      "invoice",
+      "data/invoices/SF-1093.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-SF-1093-summary",
+    "args": [
+      "invoice",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-BS-2207-pdf-llm",
+    "args": [
+      "invoice",
+      "data/invoices/BS-2207.pdf"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-BS-2207-pdf-llm-summary",
+    "args": [
+      "invoice",
+      "data/invoices/BS-2207.pdf",
+      "--summary"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-SF-1093-llm-summary",
+    "args": [
+      "invoice",
+      "--llm",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "claude_reply": "claude/SF-1093.txt.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-NB-48211",
+    "args": [
+      "prices",
+      "data/invoices/NB-48211.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-NB-48211-summary",
+    "args": [
+      "prices",
+      "data/invoices/NB-48211.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-SF-1093",
+    "args": [
+      "prices",
+      "data/invoices/SF-1093.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-SF-1093-summary",
+    "args": [
+      "prices",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-BS-2207-pdf-llm",
+    "args": [
+      "prices",
+      "data/invoices/BS-2207.pdf"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-BS-2207-pdf-llm-summary",
+    "args": [
+      "prices",
+      "data/invoices/BS-2207.pdf",
+      "--summary"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "prices-SF-1093-llm-summary",
+    "args": [
+      "prices",
+      "--llm",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "claude_reply": "claude/SF-1093.txt.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-NB-48211",
+    "args": [
+      "margin",
+      "data/invoices/NB-48211.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-NB-48211-summary",
+    "args": [
+      "margin",
+      "data/invoices/NB-48211.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-SF-1093",
+    "args": [
+      "margin",
+      "data/invoices/SF-1093.txt"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-SF-1093-summary",
+    "args": [
+      "margin",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-BS-2207-pdf-llm",
+    "args": [
+      "margin",
+      "data/invoices/BS-2207.pdf"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-BS-2207-pdf-llm-summary",
+    "args": [
+      "margin",
+      "data/invoices/BS-2207.pdf",
+      "--summary"
+    ],
+    "claude_reply": "claude/BS-2207.pdf.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "margin-SF-1093-llm-summary",
+    "args": [
+      "margin",
+      "--llm",
+      "data/invoices/SF-1093.txt",
+      "--summary"
+    ],
+    "claude_reply": "claude/SF-1093.txt.json",
+    "exit": 0,
+    "stderr_last_line": ""
+  },
+  {
+    "name": "invoice-claude-failed",
+    "args": [
+      "invoice",
+      "data/invoices/BS-2207.pdf"
+    ],
+    "claude_reply": "claude/failed.json",
+    "exit": 1,
+    "stderr_last_line": "ValueError: claude could not extract the invoice: 'gave up'"
+  }
+]
