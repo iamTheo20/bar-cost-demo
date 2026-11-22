@@ -11,7 +11,8 @@ import (
 	"testing"
 )
 
-// goldenCase is one recorded run of the Python CLI; see testdata/golden/capture.py.
+// goldenCase is one run recorded from the former Python CLI (the capture
+// script was removed with the Python code; the recordings are now fixed).
 type goldenCase struct {
 	Name           string   `json:"name"`
 	Args           []string `json:"args"`

@@ -99,22 +99,75 @@ through their one package.
 2. Register it in `Features` in `cmd/barcost/main.go`.
 3. Add a row to `FEATURES.md` and run `go test ./...`.
 
-## Status of the Python harness
+## Project layout
 
-The app used to be Python. The harness files around it (`Makefile`,
-`pyproject.toml`, `ruff.toml`, `uv.lock`, `.harness/`, `.claude/`,
-`.github/workflows/check.yml`) are read-only to agents and still describe the
-Python toolchain, so `make check`, `make verify` and CI will fail until they
-are replaced. See the pull request that introduced the Go version for the
-exact list.
+```
+bar-cost-demo/
+├── cmd/
+│   └── barcost/                 # the CLI entry point (package main)
+│       ├── main.go              #   feature registry, arg parsing, exit codes
+│       ├── main_test.go         #   CLI usage / exit-code tests
+│       ├── features_test.go     #   TestFeaturesMD: runs every row of FEATURES.md
+│       └── golden_test.go       #   TestGoldenParity: replays testdata/golden/
+├── internal/                    # app code; not importable from outside the module
+│   ├── arch_test.go             #   layering rules: features→core only, one config/log
+│   ├── core/                    #   shared building blocks, never import a feature
+│   │   ├── catalog/             #     price history, recipes, menu (CSV loaders)
+│   │   ├── cli/                 #     shared flag parsing (--summary, --llm)
+│   │   ├── config/              #     the only place that reads env vars
+│   │   ├── decimal/             #     exact money maths (Python-decimal compatible)
+│   │   ├── invoices/            #     invoice model, Extractor, arithmetic checks
+│   │   ├── llmextract/          #     PDF/photo extraction via `claude -p` + validation
+│   │   └── log/                 #     the only place that builds slog loggers
+│   └── features/                #   one package per CLI feature, never import each other
+│       ├── hello/               #     smoke-test feature
+│       ├── invoice/             #     check an invoice's arithmetic
+│       ├── prices/              #     flag price jumps vs. price history
+│       └── margin/              #     menu items pushed below target margin
+├── data/                        # sample inputs (SEK, menu prices ex VAT)
+│   ├── invoices/                #   NB-48211.txt, SF-1093.txt, BS-2207.pdf
+│   ├── menu.csv
+│   ├── price_history.csv
+│   └── recipes.csv
+├── testdata/                    # test fixtures (ignored by the go tool's build)
+│   ├── fakeclaude/claude        #   stand-in `claude` binary that replays replies
+│   └── golden/                  #   30 recorded cases from the old Python CLI
+│       ├── cases.json           #     case list: args, expected exit, stderr
+│       ├── claude/              #     real recorded Claude replies
+│       └── out/                 #     expected stdout + claude command lines
+├── docs/                        # planning and design
+│   ├── MVP_PLAN.md              #   7-phase plan from demo to sellable MVP
+│   ├── grilling-log.md          #   the design interview behind the plan
+│   ├── GLOSSARY.md              #   domain language
+│   └── adr/                     #   architecture decisions 0001–0006
+├── .github/workflows/check.yml  # CI (still Python, see below)
+├── .harness/                    # agent rules engine (still Python, see below)
+├── .claude/settings.json        # Claude Code permissions for this repo
+├── FEATURES.md                  # feature contract: command → expected output
+├── CLAUDE.md                    # instructions for coding agents
+├── Makefile                     # check/verify targets (still Python, see below)
+├── go.mod                       # Go module definition
+└── README.md
+```
 
-The old Python source (`src/`, `tests/`, `scripts/`) is still in the tree on
-this branch: the overnight run that wrote the Go version was not permitted to
-delete it. It is no longer the implementation; remove it with
-`git rm -r src tests scripts` once the Go version is accepted.
+## Status of the old Python harness
+
+The app is now Go only: the Python source, tests and scripts are gone. The
+harness files around it are read-only to agents and still describe the Python
+toolchain, so `make check`, `make verify` and CI fail until they are replaced:
+
+- `Makefile`: `check` → `test -z "$(gofmt -l .)" && go vet ./... && go test ./...`,
+  `verify` → `go test ./cmd/barcost -run TestFeaturesMD`; drop `new-feature`,
+  `lint`, `types`, `imports`, `rules`.
+- `.github/workflows/check.yml`: `actions/setup-go` with `go-version-file: go.mod`
+  instead of `setup-uv`.
+- `pyproject.toml`, `ruff.toml`, `uv.lock`: delete.
+- `.harness/*.py`, `rules.toml`, `baseline.json`: port or drop (layering is
+  covered by `internal/arch_test.go`).
+- `.claude/settings.json`, `CLAUDE.md`: point at the Go files and commands.
 
 ## Planning
 
 `docs/MVP_PLAN.md` is the plan for turning this demo into a sellable MVP,
-`docs/grilling-log.md` the decisions behind it, `GLOSSARY.md` the domain
+`docs/grilling-log.md` the decisions behind it, `docs/GLOSSARY.md` the domain
 language and `docs/adr/` the decisions that are hard to reverse.
