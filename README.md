@@ -140,31 +140,38 @@ bar-cost-demo/
 │   ├── grilling-log.md          #   the design interview behind the plan
 │   ├── GLOSSARY.md              #   domain language
 │   └── adr/                     #   architecture decisions 0001–0006
-├── .github/workflows/check.yml  # CI (still Python, see below)
-├── .harness/                    # agent rules engine (still Python, see below)
-├── .claude/settings.json        # Claude Code permissions for this repo
+├── tools/
+│   └── newfeature/              # `make new-feature NAME=x` scaffold
+├── .harness/                    # the agent harness (read-only to agents)
+│   ├── rules.go                 #   rule engine HR001–HR007: go run .harness/rules.go
+│   ├── rules.json               #   limits, layer boundary, banned calls
+│   ├── baseline.json            #   tolerated old violations (may only shrink)
+│   ├── config_guard.go          #   CI ratchet: fails a PR that weakens any check
+│   └── RULES.md                 #   changelog of every rule and why it exists
+├── .github/workflows/check.yml  # CI: config guard, then make check verify
+├── .claude/settings.json        # Claude Code deny list for the harness files
 ├── FEATURES.md                  # feature contract: command → expected output
 ├── CLAUDE.md                    # instructions for coding agents
-├── Makefile                     # check/verify targets (still Python, see below)
+├── Makefile                     # the one gate: make check, make verify
 ├── go.mod                       # Go module definition
 └── README.md
 ```
 
-## Status of the old Python harness
+## The gate
 
-The app is now Go only: the Python source, tests and scripts are gone. The
-harness files around it are read-only to agents and still describe the Python
-toolchain, so `make check`, `make verify` and CI fail until they are replaced:
+`make check` runs, in order:
 
-- `Makefile`: `check` → `test -z "$(gofmt -l .)" && go vet ./... && go test ./...`,
-  `verify` → `go test ./cmd/barcost -run TestFeaturesMD`; drop `new-feature`,
-  `lint`, `types`, `imports`, `rules`.
-- `.github/workflows/check.yml`: `actions/setup-go` with `go-version-file: go.mod`
-  instead of `setup-uv`.
-- `pyproject.toml`, `ruff.toml`, `uv.lock`: delete.
-- `.harness/*.py`, `rules.toml`, `baseline.json`: port or drop (layering is
-  covered by `internal/arch_test.go`).
-- `.claude/settings.json`, `CLAUDE.md`: point at the Go files and commands.
+| target | what it runs |
+| --- | --- |
+| `lint` | `gofmt -l .` must be empty, then `go vet ./...` |
+| `types` | `go build ./...` and compiling every test binary |
+| `imports` | `internal/arch_test.go`: core never imports features, features never import each other, one way to read settings and log |
+| `rules` | `go run .harness/rules.go` (see `.harness/RULES.md`) |
+| `test` | `go test -race ./...` |
+
+`make verify` runs `TestFeaturesMD`. On pull requests CI first runs the
+base branch's `.harness/config_guard.go`, so a branch cannot weaken the checks
+that judge it.
 
 ## Planning
 

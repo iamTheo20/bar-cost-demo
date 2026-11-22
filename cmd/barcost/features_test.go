@@ -15,7 +15,7 @@ var featureRow = regexp.MustCompile("^\\|\\s*([^|`]+?)\\s*\\|\\s*`([^`]+)`\\s*\\
 const runPrefix = "go run ./cmd/barcost "
 
 // TestFeaturesMD runs every row of FEATURES.md and compares the output
-// exactly. It replaces the Python `make verify`.
+// exactly. `make verify` runs it.
 func TestFeaturesMD(t *testing.T) {
 	root := repoRoot(t)
 	raw, err := os.ReadFile(filepath.Join(root, "FEATURES.md"))

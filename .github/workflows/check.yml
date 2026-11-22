@@ -16,19 +16,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
 
       - name: Config ratchet, judged by the base branch's guard
         if: github.event_name == 'pull_request'
         run: |
-          git show "origin/$GITHUB_BASE_REF:.harness/config_guard.py" > "$RUNNER_TEMP/config_guard.py"
-          python3 -I "$RUNNER_TEMP/config_guard.py" --root . --base "origin/$GITHUB_BASE_REF"
+          base="origin/$GITHUB_BASE_REF"
+          if ! git cat-file -e "$base:.harness/config_guard.go" 2>/dev/null; then
+            echo "::error::$base has no Go config guard; a PR that replaces the harness is merged by Top Baldy over a red CI"
+            exit 1
+          fi
+          git show "$base:.harness/config_guard.go" > "$RUNNER_TEMP/config_guard.go"
+          (cd "$RUNNER_TEMP" && go run config_guard.go --root "$GITHUB_WORKSPACE" --base "$base")
 
       - name: Use the base branch's check config, not the PR's
         if: github.event_name == 'pull_request'
         run: |
-          git checkout "origin/$GITHUB_BASE_REF" -- ruff.toml Makefile .harness/rules.py .harness/rules.toml .harness/baseline.json
-
-      - run: uv sync --frozen
+          git checkout "origin/$GITHUB_BASE_REF" -- Makefile .harness/rules.go .harness/rules.json .harness/baseline.json internal/arch_test.go
 
       - run: make check verify

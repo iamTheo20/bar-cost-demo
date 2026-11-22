@@ -1,8 +1,8 @@
 # Features
 
 Every user-facing feature, how to run it and what correct output is.
-`go test ./cmd/barcost -run TestFeaturesMD` runs each row and compares the
-output exactly (it replaces the Python `make verify`). A feature is not done
+`make verify` (`go test ./cmd/barcost -run TestFeaturesMD`) runs each row and
+compares the output exactly. A feature is not done
 until it has a row here and that test passes. Changes to this file are
 reviewed like code: an expected output may only change when the behaviour is
 meant to.
